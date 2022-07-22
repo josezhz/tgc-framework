@@ -1,7 +1,6 @@
 const express = require("express");
 const hbs = require("hbs");
 const wax = require("wax-on");
-const router = require("./routes/landing");
 require("dotenv").config();
 
 let app = express();
