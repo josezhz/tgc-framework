@@ -1,6 +1,7 @@
 const express = require("express");
 const hbs = require("hbs");
 const wax = require("wax-on");
+const router = require("./routes/landing");
 require("dotenv").config();
 
 let app = express();
@@ -12,18 +13,11 @@ app.use(express.static("public"));
 wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
 
-app.use(
-    express.urlencoded({
-        extended: false
-    })
-);
+const landingRoutes = require('./routes/landing');
+const productRoutes = require('./routes/products');
 
-async function main() {
-    app.get('/', function (req, res) {
-        res.send("Hello");
-    });
-}
-main();
+app.use('/', landingRoutes);
+app.use('/products', productRoutes);
 
 app.listen(3000, () => {
     console.log("Server started");
