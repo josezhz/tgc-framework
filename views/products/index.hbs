@@ -1,12 +1,17 @@
 {{#extends 'base'}}
 
 {{#block "content"}}
+<h1>Products</h1>
+<div>
+    <a href="/products/create" class="btn btn-success btn-sm">Create</a>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Cost (&#162;)</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
@@ -15,6 +20,10 @@
             <td>{{this.name}}</td>
             <td>{{this.description}}</td>
             <td>{{this.cost}}</td>
+            <td>
+                <a href="/products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+                <a href="/products/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+            </td>
         </tr>
         {{/each}}
     </tbody>
