@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { Product, Category, Tag } = require('../models');
 const { createProductForm, bootstrapField } = require('../forms');
+const { checkIfAuthenticated } = require('../middlewares');
 
 router.get('/', async function (req, res) {
     let products = await Product.collection().fetch({
@@ -13,7 +14,7 @@ router.get('/', async function (req, res) {
     })
 })
 
-router.get('/create', async function (req, res) {
+router.get('/create', checkIfAuthenticated, async function (req, res) {
     const categories = await Category.fetchAll().map(category => [category.get('id'), category.get('name')]);
     const allTags = await Tag.fetchAll().map(tag => [tag.get('id'), tag.get('name')]);
     const productForm = createProductForm(categories, allTags);
@@ -22,7 +23,7 @@ router.get('/create', async function (req, res) {
     });
 })
 
-router.post('/create', async function (req, res) {
+router.post('/create', checkIfAuthenticated, async function (req, res) {
     const productForm = createProductForm();
     productForm.handle(req, {
         success: async function (form) {
@@ -32,6 +33,7 @@ router.post('/create', async function (req, res) {
             if (tags) {
                 await product.tags().attach(tags.split(","));
             }
+            req.flash('success_messages', 'Success')
             res.redirect('/products');
         },
         error: function (form) {
